@@ -119,4 +119,24 @@ I would appreciate a citation if you use any of the codes in any published work 
   year      = {2019},
   doi       = {10.5281/zenodo.2548538}
 }
+```
 
+# Fork overview
+The original MakeGraphitics was made by [velocirobbie](https://github.com/velocirobbie). This repo is currently inactive.
+
+There are 4 public forks:
+- [lslowmotion](https://github.com/lslowmotion/make-graphitics)
+    - Makes some changes to graphite_cell.py; These are not included (yet)
+    - Improves formatting etc.; Not included as it is already done by the forked fork
+- [prttt26](https://github.com/prttt26/make-graphitics)
+    - Changes the output extension; I disagree so haven't included it
+    - Improves a description in the oxidiser; This has been included
+- [zorped](https://github.com/zorped/make-graphitics)
+    - Makes a change to the README; Is not included here
+- [sntioudis](https://github.com/sntioudis/make-graphitics)
+    - Adds support for Hexagonal graphene sheets
+    - Fixes print brackets
+    - Standardizes import statements
+    - Spell checks README
+
+The last fork it forked to get this repo.

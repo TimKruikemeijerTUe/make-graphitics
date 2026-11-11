@@ -1,6 +1,7 @@
 import numpy as np
-from .oxidise_rf import init_random_forest
+
 from .base import Reactor
+from .oxidise_rf import init_random_forest
 
 
 class Oxidiser(Reactor):
@@ -10,8 +11,8 @@ class Oxidiser(Reactor):
         surface_OHratio=0.5,  # Surface OH/epoxy fraction
         edge_OHratio=0.25,  # edge H:OH:carboxyl ratio
         edge_carboxyl_ratio=0.25,  # edge H:OH:carboxyl ratio
-        carboxyl_charged_ratio=0, # proportion of deprotonated carboxyls
-        counterion=None, # Include counterion with charged carboxyl groups
+        carboxyl_charged_ratio=0,  # proportion of deprotonated carboxyls
+        counterion=None,  # Include counterion with charged carboxyl groups
         method="rf",  # which method to calculate a site's affinity
         # empirical / rf (random forest)
         new_island_freq=0,  # Freq s-1 attempt to add new island
@@ -53,11 +54,13 @@ class Oxidiser(Reactor):
         assert 0 <= carboxyl_charged_ratio <= 1
         assert edge_OHratio + edge_carboxyl_ratio <= 1
 
-        assert counterion in [None, 'Na', 'Ca']
+        assert counterion in [None, "Na", "Ca"]
         if (counterion is not None) and (carboxyl_charged_ratio == 0):
-            print("WARNING: you have specified a counterion without " +
-                  "specifying carboxyl_charged_ratio, no counter ions " +
-                  "will included")
+            print(
+                "WARNING: you have specified a counterion without "
+                "specifying carboxyl_charged_ratio, no counter ions "
+                "will included"
+            )
 
         self.surface_OHratio = surface_OHratio
         self.edge_OHratio = edge_OHratio
@@ -119,12 +122,12 @@ class Oxidiser(Reactor):
             11: 108,  # Cb, Benzyl
             7: 109,  # Oa, C-OH
             8: 209,  # Cc, Carboxylic carbon
-            9: 210,  # Oc, Ketone oxygen
-            10: 211,  # Oa, alcohol
-            12: 213, # C, carboxylate -COO
-            13: 214, # O, carboxylate -COO
-            349: 349, # Na+
-            354: 354, # Ca 2+ 
+            9: 210,  # Oc, Carboxylic Ketone oxygen
+            10: 211,  # Oa, Carboxylic -OH
+            12: 213,  # C, carboxylate -COO
+            13: 214,  # O, carboxylate -COO
+            349: 349,  # Na+
+            354: 354,  # Ca 2+
         }  # OPLS definitions
 
     def set_partitions(self, n_partitions, NCCbonds):
@@ -175,8 +178,7 @@ class Oxidiser(Reactor):
 
         # Ca counterions are 2+ charge
         # if odd number in charge_carboxyl_sites remove one
-        if ((len(charge_carboxyl_sites) % 2) and
-                (self.counterion == 'Ca')):
+        if (len(charge_carboxyl_sites) % 2) and (self.counterion == "Ca"):
             self.add_carboxyl(sim, charge_carboxyl_sites[0])
             charge_carboxyl_sites = charge_carboxyl_sites[1:]
 
@@ -193,11 +195,11 @@ class Oxidiser(Reactor):
         print("added:")
         print(edge_OH, "\tOH")
         print(carboxyl - charged_carboxyls, "\tCOOH")
-        print(charged_carboxyls,"\tCOO-")
+        print(charged_carboxyls, "\tCOO-")
         if self.counterion:
             print(n_counterions, self.counterion, "counterions")
         print("----------------------")
-        print( )
+        print()
 
         return edge_OH, carboxyl
 
@@ -213,7 +215,7 @@ class Oxidiser(Reactor):
             if not new_island:
                 available_CC_bonds = np.sum(np.array(self.affinities_above != 0))
                 new_island = np.random.poisson(
-                    float(dt) * self.new_island_freq * available_CC_bonds
+                    float(dt) * self.new_island_freq * available_CC_bonds,
                 )
             self.node_order += [new_island]
             self.time_elapsed_list += [time_elapsed]
@@ -263,7 +265,9 @@ class Oxidiser(Reactor):
                 self.output_snapshot(crystal)
             if self.video_lammps and not self.Noxygens % self.video_lammps:
                 self.output_snapshot(
-                    crystal, format_="lammps", filename=str(self.Noxygens)
+                    crystal,
+                    format_="lammps",
+                    filename=str(self.Noxygens),
                 )
 
         print(OH_added, "\tOH were added")
@@ -403,9 +407,7 @@ class Oxidiser(Reactor):
         edge = 0
         m = [-3.867, 0.185, 23.169, -5.138, 11.648, -4.413]
         for state in first:
-            if state == 1:
-                steric += 1
-            elif state == 2:
+            if state == 1 or state == 2:
                 steric += 1
             if abs(state) == 1:
                 polar += 1
@@ -443,13 +445,13 @@ class Oxidiser(Reactor):
         above = 0
         for i, affinity in enumerate(bool_affinity):
             R += affinity
-            if R > r:
+            if r < R:
                 above = 1
                 break
         if not above:
             for i, affinity in enumerate(bool_affinity):
                 R += affinity
-                if R > r:
+                if r < R:
                     above = -1
                     break
         if above == 0:
@@ -470,10 +472,10 @@ class Oxidiser(Reactor):
         totals_below = np.zeros(self.n_partitions)
         for i in range(self.n_partitions):
             totals_above[i] = np.sum(
-                reactivity_above[self.partitions[i][0] : self.partitions[i][1]]
+                reactivity_above[self.partitions[i][0] : self.partitions[i][1]],
             )
             totals_below[i] = np.sum(
-                reactivity_below[self.partitions[i][0] : self.partitions[i][1]]
+                reactivity_below[self.partitions[i][0] : self.partitions[i][1]],
             )
 
         total_above = np.sum(totals_above)
@@ -535,7 +537,7 @@ class Oxidiser(Reactor):
         bond_vector = bond_vector / np.linalg.norm(bond_vector)
         o_coord = C_coord + bond_vector * CO
         above = np.random.randint(2)
-        h_coord = o_coord + bond_vector * OH + np.array(([0, 0, OH * (-1) ** above]))
+        h_coord = o_coord + bond_vector * OH + np.array([0, 0, OH * (-1) ** above])
 
         molecule = crystal.molecule_labels[C_at]
         O_at = H_at  # H becomes O to preserve bond already there
@@ -551,7 +553,7 @@ class Oxidiser(Reactor):
         crystal.atom_charges += [0.435]
         crystal.molecule_labels += [molecule]
 
-        new_bond = np.array(([O_at + 1, H_at + 1]))
+        new_bond = np.array([O_at + 1, H_at + 1])
         crystal.bonds = np.vstack((crystal.bonds, new_bond))
 
     def add_charged_carboxyl(self, crystal, H_at, counterion):
@@ -597,22 +599,20 @@ class Oxidiser(Reactor):
         if counterion:
             counterion_coord = C1_coord + bond_vector * C_ion
             crystal.coords = np.vstack((crystal.coords, counterion_coord))
-            crystal.molecule_labels += [ max(crystal.molecule_labels) + 1 ]
-            if counterion == 'Na':
+            crystal.molecule_labels += [max(crystal.molecule_labels) + 1]
+            if counterion == "Na":
                 crystal.atom_labels += [349]
                 crystal.atom_charges += [+1.0]
-            elif counterion == 'Ca':
+            elif counterion == "Ca":
                 crystal.atom_labels += [354]
                 crystal.atom_charges += [+2.0]
             else:
-                raise Exception('Counterion not implemented:', counterion)
-
+                raise Exception("Counterion not implemented:", counterion)
 
         new_bonds = np.array(
-            ([C1_at + 1, O1_at + 1], [C1_at + 1, O2_at + 1])
+            ([C1_at + 1, O1_at + 1], [C1_at + 1, O2_at + 1]),
         )
         crystal.bonds = np.vstack((crystal.bonds, new_bonds))
-
 
     def add_carboxyl(self, crystal, H_at):
         bonded_to = crystal.bonded_to(H_at)
@@ -659,7 +659,7 @@ class Oxidiser(Reactor):
         crystal.molecule_labels += [molecule] * 3
 
         new_bonds = np.array(
-            ([C1_at + 1, O1_at + 1], [C1_at + 1, O2_at + 1], [O2_at + 1, H_at + 1])
+            ([C1_at + 1, O1_at + 1], [C1_at + 1, O2_at + 1], [O2_at + 1, H_at + 1]),
         )
         crystal.bonds = np.vstack((crystal.bonds, new_bonds))
 
@@ -692,13 +692,9 @@ class Oxidiser(Reactor):
         molecule = crystal.molecule_labels[c1]
 
         c1c2 = crystal.coords[c2] - crystal.coords[c1]
-        if c1c2[0] > 2:
+        if c1c2[0] > 2 or c1c2[0] < -2:
             c1c2[0] += crystal.box_dimensions[0, 1]
-        elif c1c2[0] < -2:
-            c1c2[0] += crystal.box_dimensions[0, 1]
-        if c1c2[1] > 2:
-            c1c2[1] += crystal.box_dimensions[1, 1]
-        elif c1c2[1] < -2:
+        if c1c2[1] > 2 or c1c2[1] < -2:
             c1c2[1] += crystal.box_dimensions[1, 1]
         CO = 0.9 * above
         o_coord = crystal.coords[c1] + np.array([0, 0, CO]) + 0.5 * c1c2
