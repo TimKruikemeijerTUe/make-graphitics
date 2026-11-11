@@ -1,5 +1,10 @@
-from math import pi, cos, sin, sqrt
+#!/usr/bin/env python3
+
+
+from math import cos, pi, sin, sqrt
+
 import numpy as np
+
 from .base import Molecule
 
 
@@ -11,7 +16,7 @@ class Hexagon_Graphene(Molecule):
         self.CH = config[forcefield]["CH"]
         self.layer_gap = config[forcefield]["layer_gap"]
         self.order = int(
-            (radius + (sqrt(3) / 2) * (self.CC - self.CH)) / (self.CC * sqrt(3))
+            (radius + (sqrt(3) / 2) * (self.CC - self.CH)) / (self.CC * sqrt(3)),
         )
         self.radius = self.order * self.CC * sqrt(3)
         self.natoms = 0
@@ -52,14 +57,14 @@ class Hexagon_Graphene(Molecule):
                         -(ring - 1) * cos_CC + branch * 2 * cos_CC,
                         sin_CC + ring * (CC + sin_CC),
                         0,
-                    ]
+                    ],
                 )
                 add_atom(
                     [
                         -(ring - 2) * cos_CC + branch * 2 * cos_CC,
                         CC + ring * (CC + sin_CC),
                         0,
-                    ]
+                    ],
                 )
 
         # Add Hydrogens round edge
@@ -69,7 +74,7 @@ class Hexagon_Graphene(Molecule):
                     -(self.order - 1) * cos_CC + branch * 2 * cos_CC,
                     CC + CH + (self.order - 1) * (sin_CC + CC),
                     0,
-                ]
+                ],
             )
 
         def rotate_vector(section, theta):
@@ -113,9 +118,7 @@ class Hexagon_Graphene(Molecule):
         segment_inner_carbons = [0] * number_of_inner_carbons
         segment_outer_carbons = [-q] + [0, -q] * (self.order - 1)
         segment_hydrogens = [q] * self.order
-        segment_charges = (
-            segment_inner_carbons + segment_outer_carbons + segment_hydrogens
-        )
+        segment_charges = segment_inner_carbons + segment_outer_carbons + segment_hydrogens
         for z in range(lattice_dimensions[2]):
             for i in range(6):
                 atom_charges += segment_charges
@@ -150,7 +153,7 @@ class Hexagon_Graphene(Molecule):
         molecule_bonds = np.empty((0, 2), dtype=int)
         for i in range(6):
             molecule_bonds = np.vstack(
-                (molecule_bonds, segment_bonds + natoms_section * i)
+                (molecule_bonds, segment_bonds + natoms_section * i),
             )
 
         for connection in range(self.order):

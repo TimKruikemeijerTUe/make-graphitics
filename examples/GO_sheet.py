@@ -1,6 +1,10 @@
-import yaml
-from math import pi, cos
+#!/usr/bin/env python3
+
+
+from math import cos, pi
+
 import makegraphitics as mg
+import yaml
 
 config = yaml.load(open("config.yaml"), Loader=yaml.FullLoader)
 forcefield = "OPLS"
@@ -19,7 +23,10 @@ motif = mg.molecules.Graphene(forcefield=forcefield)
 sheet = mg.Crystal(motif, layout)
 
 oxidiser = mg.reactors.Oxidiser(
-    ratio=2.5, video_xyz=20, new_island_freq=1e14, method="rf"
+    ratio=2.5,
+    video_xyz=20,
+    new_island_freq=1e14,
+    method="rf",
 )
 sheet = oxidiser.react(sheet)
 

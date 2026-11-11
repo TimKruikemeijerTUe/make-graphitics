@@ -1,5 +1,10 @@
-from math import pi, cos, sin
+#!/usr/bin/env python3
+
+
+from math import cos, pi, sin
+
 import numpy as np
+
 from .base import Molecule
 
 
@@ -85,7 +90,7 @@ class Rectangle_Graphene(Molecule):
             add_coord([cos_CC + 2 * col * cos_CC, -sin_CC - CH, 0])
         for col in range(self.x):
             add_coord(
-                [cos_CC + 2 * col * cos_CC, CC + (row * 3 / 2) * CC + sin_CC + CH, 0]
+                [cos_CC + 2 * col * cos_CC, CC + (row * 3 / 2) * CC + sin_CC + CH, 0],
             )
 
         # armchair Hs

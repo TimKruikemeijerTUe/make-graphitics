@@ -1,8 +1,12 @@
-import numpy as np
+#!/usr/bin/env python3
+
+
 from math import pi
 
+import numpy as np
 
-class Island(object):
+
+class Island:
     def __init__(self):
         self.atoms = []
         self.coords = []
@@ -34,9 +38,7 @@ class Island(object):
 
 def build_bond_network(bonds, atom_types):
     N = len(atom_types)
-    bond_network = {
-        i + 1: {"type": type_, "bonded_to": []} for i, type_ in enumerate(atom_types)
-    }
+    bond_network = {i + 1: {"type": type_, "bonded_to": []} for i, type_ in enumerate(atom_types)}
     for bond in bonds:
         bond_network[bond[0]]["bonded_to"] += [bond[1]]
         bond_network[bond[1]]["bonded_to"] += [bond[0]]
@@ -44,7 +46,14 @@ def build_bond_network(bonds, atom_types):
 
 
 def flood_island(
-    index, bond_network, island_labels, atom_types, island_index, coords, x, y
+    index,
+    bond_network,
+    island_labels,
+    atom_types,
+    island_index,
+    coords,
+    x,
+    y,
 ):
     island = Island()
 
@@ -73,12 +82,9 @@ def flood_island(
     y_max = 0
 
     def check_island_range(coord, x_min, x_max, y_min, y_max):
-        if coord[0] < x_min:
-            x_min = coord[0]
-        if coord[0] > x_max:
-            x_max = coord[0]
-        if coord[1] < y_min:
-            y_min = coord[1]
+        x_min = min(x_min, coord[0])
+        x_max = max(x_max, coord[0])
+        y_min = min(y_min, coord[1])
         if coord[1] > y_min:
             y_max = coord[1]
         check = True
@@ -154,13 +160,12 @@ def outer_polygon(coords, alpha):
     if len(coords) < 3:
         return 0
     from scipy.spatial import Delaunay
+    from shapely import geometry
     from shapely.ops import cascaded_union, polygonize
-    import shapely.geometry as geometry
 
     def alpha_shape(coords, alpha):
         def add_edge(edges, edge_points, coords, i, j):
-            """
-            Add a line between the i-th and j-th points,
+            """Add a line between the i-th and j-th points,
             if not in the list already
             """
             if (i, j) in edges or (j, i) in edges:
@@ -197,15 +202,12 @@ def outer_polygon(coords, alpha):
         # When you have a triangle, there is no sense
         # in computing an alpha shape.
         return geometry.MultiPoint(list(coords)).convex_hull
-    else:
-        concave_hull, edge_points = alpha_shape(coords, alpha=alpha)
-        return concave_hull
+    concave_hull, edge_points = alpha_shape(coords, alpha=alpha)
+    return concave_hull
 
 
 def simple_area(coords):
-    atom_area = (
-        1.414 ** 2 * 3 * np.sqrt(3) / 4
-    )  # 2.60, number density of graphene atoms
+    atom_area = 1.414**2 * 3 * np.sqrt(3) / 4  # 2.60, number density of graphene atoms
     return len(coords) * atom_area
 
 
@@ -227,8 +229,7 @@ def write_islands_xyz(islands):
         for i, island in enumerate(islands):
             for coord in island.coords:
                 f.write(str((i + 1) % 10) + "\t")
-                for axis in coord:
-                    f.write(str(axis) + "\t")
+                f.writelines(str(axis) + "\t" for axis in coord)
                 f.write("\n")
 
 
@@ -240,19 +241,15 @@ def write_gnuplot(islands):
                 break
             f.write("set object " + str(i + 1) + " polygon from \\\n")
             coords = list(island.boundary.exterior.coords)
-            for point in coords:
-                f.write("\t" + str(point[0]) + "," + str(point[1]) + " to \\\n")
+            f.writelines("\t" + str(point[0]) + "," + str(point[1]) + " to \\\n" for point in coords)
             f.write("\t" + str(coords[-1][0]) + "," + str(coords[-1][1]) + " \n")
             f.write(
-                "set object "
-                + str(i + 1)
-                + " fc rgb '#000000' fillstyle solid lw 0\n\n"
+                "set object " + str(i + 1) + " fc rgb '#000000' fillstyle solid lw 0\n\n",
             )
     # write coords of all island atoms
     with open("island_coords.dat", "w") as f:
         for island in islands:
-            for coord in island.coords:
-                f.write(str(coord[0]) + "\t " + str(coord[1]) + "\n")
+            f.writelines(str(coord[0]) + "\t " + str(coord[1]) + "\n" for coord in island.coords)
     # draw circles of an island's approximate area
     with open("island_area_circle.dat", "w") as f:
         for island in islands:
@@ -264,7 +261,7 @@ def write_gnuplot(islands):
                 + str(island.diameter("area_simple") / 2)
                 + "\t"
                 + str(island.diameter("area_boundary") / 2)
-                + "\n"
+                + "\n",
             )
     # plot with:
     # gnuplot> load 'island_objects.sh'

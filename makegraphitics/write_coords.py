@@ -1,8 +1,10 @@
-import os
+#!/usr/bin/env python3
+
+
 import numpy as np
 
 
-class Writer(object):
+class Writer:
     def __init__(self, sim, system_name="comment line"):
         # Takes a numpy 3xN array of atom coordinates and outputs
         # them in different formats for viewing/modelling
@@ -56,13 +58,7 @@ class Writer(object):
         with open(filename, option) as outfile:
             outfile.write(str(len(self.coords)) + "\n" + self.system_name + "\n")
             for i in range(len(self.coords)):
-                xyz = (
-                    str(self.coords[i][0])
-                    + " "
-                    + str(self.coords[i][1])
-                    + " "
-                    + str(self.coords[i][2])
-                )
+                xyz = str(self.coords[i][0]) + " " + str(self.coords[i][1]) + " " + str(self.coords[i][2])
                 if hasattr(self, "masses"):
                     try:
                         mass = self.masses[self.atom_labels[i]]
@@ -79,7 +75,7 @@ class Writer(object):
                     elif abs(mass - 22.9) < 0.5:
                         atom_label = "Na "
                     elif abs(mass - 40.1) < 0.5:
-                        atom_label ="Ca "
+                        atom_label = "Ca "
                     else:
                         atom_label = str(self.atom_labels[i]) + " "
                 else:
@@ -117,12 +113,11 @@ class Writer(object):
                 + "\t"
                 + str(self.box_dimensions[2, 1])
                 + "\t zlo zhi \n"
-                + "\n"
+                + "\n",
             )
             if hasattr(self, "masses"):
                 outfile.write("\n Masses \n \n")
-                for mass in reax_types:
-                    outfile.write(str(reax_types[mass]) + "\t" + str(mass) + "\n")
+                outfile.writelines(str(reax_types[mass]) + "\t" + str(mass) + "\n" for mass in reax_types)
 
             outfile.write("\n Atoms \n \n")
 
@@ -141,7 +136,7 @@ class Writer(object):
                     + str(self.coords[i][1])  # x
                     + "\t "
                     + str(self.coords[i][2])  # y
-                    + "\n "  # z
+                    + "\n ",  # z
                 )
 
             print("Coords written to " + filename)
@@ -187,74 +182,53 @@ class Writer(object):
                 + "\t"
                 + str(self.box_dimensions[2, 1])
                 + "\t zlo zhi \n"
-                + "\n"
+                + "\n",
             )
             if hasattr(self, "masses"):
                 outfile.write("\n Masses \n \n")
-                for i in self.masses:
-                    outfile.write(str(i) + "\t" + str(self.masses[i]) + "\n")
+                outfile.writelines(str(i) + "\t" + str(self.masses[i]) + "\n" for i in self.masses)
 
             if hasattr(self, "pair_coeffs"):
                 outfile.write("\n Pair Coeffs \n \n")
-                for i in self.pair_coeffs:
-                    outfile.write(
-                        str(i)
-                        + "\t"
-                        + str(self.pair_coeffs[i][1])
-                        + "\t"
-                        + str(self.pair_coeffs[i][2])
-                        + "\n"
-                    )
+                outfile.writelines(
+                    str(i) + "\t" + str(self.pair_coeffs[i][1]) + "\t" + str(self.pair_coeffs[i][2]) + "\n"
+                    for i in self.pair_coeffs
+                )
 
             if hasattr(self, "bond_coeffs"):
                 outfile.write("\n Bond Coeffs \n \n")
-                for i in self.bond_coeffs:
-                    outfile.write(
-                        str(i)
-                        + "\t"
-                        + str(self.bond_coeffs[i][1])
-                        + "\t"
-                        + str(self.bond_coeffs[i][2])
-                        + "\n"
-                    )
+                outfile.writelines(
+                    str(i) + "\t" + str(self.bond_coeffs[i][1]) + "\t" + str(self.bond_coeffs[i][2]) + "\n"
+                    for i in self.bond_coeffs
+                )
             if hasattr(self, "angle_coeffs"):
                 outfile.write("\n Angle Coeffs \n \n")
-                for i in self.angle_coeffs:
-                    outfile.write(
-                        str(i)
-                        + "\t"
-                        + str(self.angle_coeffs[i][1])
-                        + "\t"
-                        + str(self.angle_coeffs[i][2])
-                        + "\n"
-                    )
+                outfile.writelines(
+                    str(i) + "\t" + str(self.angle_coeffs[i][1]) + "\t" + str(self.angle_coeffs[i][2]) + "\n"
+                    for i in self.angle_coeffs
+                )
             if hasattr(self, "dihedral_coeffs"):
                 outfile.write("\n Dihedral Coeffs \n \n")
-                for i in self.dihedral_coeffs:
-                    outfile.write(
-                        str(i)
-                        + "\t"
-                        + str(self.dihedral_coeffs[i][1])
-                        + "\t"
-                        + str(self.dihedral_coeffs[i][2])
-                        + "\t"
-                        + str(self.dihedral_coeffs[i][3])
-                        + "\t"
-                        + str(self.dihedral_coeffs[i][4])
-                        + "\n"
-                    )
+                outfile.writelines(
+                    str(i)
+                    + "\t"
+                    + str(self.dihedral_coeffs[i][1])
+                    + "\t"
+                    + str(self.dihedral_coeffs[i][2])
+                    + "\t"
+                    + str(self.dihedral_coeffs[i][3])
+                    + "\t"
+                    + str(self.dihedral_coeffs[i][4])
+                    + "\n"
+                    for i in self.dihedral_coeffs
+                )
 
             if hasattr(self, "improper_coeffs"):
                 outfile.write("\n Improper Coeffs \n \n")
-                for i in self.improper_coeffs:
-                    outfile.write(
-                        str(i)
-                        + "\t"
-                        + str(self.improper_coeffs[i][1])
-                        + "\t"
-                        + str(self.improper_coeffs[i][2])
-                        + "\n"
-                    )
+                outfile.writelines(
+                    str(i) + "\t" + str(self.improper_coeffs[i][1]) + "\t" + str(self.improper_coeffs[i][2]) + "\n"
+                    for i in self.improper_coeffs
+                )
 
             outfile.write("\n Atoms \n \n")
 
@@ -273,7 +247,7 @@ class Writer(object):
                     + str(self.coords[i][1])  # x
                     + "\t "
                     + str(self.coords[i][2])  # y
-                    + "\n "  # z
+                    + "\n ",  # z
                 )
 
             if len(self.bonds):
@@ -287,7 +261,7 @@ class Writer(object):
                         + str(self.bonds[i][0])
                         + "\t "
                         + str(self.bonds[i][1])  # atom 1
-                        + "\n"  # atom 2
+                        + "\n",  # atom 2
                     )
 
             if len(self.angles):
@@ -303,7 +277,7 @@ class Writer(object):
                         + str(self.angles[i][1])
                         + "\t "
                         + str(self.angles[i][2])
-                        + "\n"
+                        + "\n",
                     )
 
             if len(self.dihedrals):
@@ -321,7 +295,7 @@ class Writer(object):
                         + str(self.dihedrals[i][2])
                         + " \t"
                         + str(self.dihedrals[i][3])
-                        + " \n"
+                        + " \n",
                     )
 
             if len(self.impropers):
@@ -339,7 +313,7 @@ class Writer(object):
                         + str(self.impropers[i][2])
                         + " \t"
                         + str(self.impropers[i][3])
-                        + " \n"
+                        + " \n",
                     )
 
             print("Coords written to " + filename)

@@ -1,4 +1,7 @@
-from setuptools import setup, find_packages
+#!/usr/bin/env python3
+
+
+from setuptools import find_packages, setup
 
 setup(
     name="makegraphitics",

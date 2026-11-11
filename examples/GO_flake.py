@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 import makegraphitics as mg
 
 flake_radius = 25
@@ -7,7 +10,10 @@ motif = mg.molecules.Hexagon_Graphene(flake_radius)
 flake = mg.Crystal(motif, layout)
 
 oxidiser = mg.reactors.Oxidiser(
-    ratio=2.5, video_xyz=20, new_island_freq=1e14, method="rf"
+    ratio=2.5,
+    video_xyz=20,
+    new_island_freq=1e14,
+    method="rf",
 )
 flake = oxidiser.react(flake)
 

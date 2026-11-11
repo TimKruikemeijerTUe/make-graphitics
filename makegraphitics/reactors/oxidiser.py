@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 import numpy as np
 
 from .base import Reactor
@@ -59,7 +62,7 @@ class Oxidiser(Reactor):
             print(
                 "WARNING: you have specified a counterion without "
                 "specifying carboxyl_charged_ratio, no counter ions "
-                "will included"
+                "will included",
             )
 
         self.surface_OHratio = surface_OHratio

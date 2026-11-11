@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
+
+
+from math import cos, pi, sin
+
 import numpy as np
-from math import cos, sin, pi
+
 from .write_coords import Writer
 
 
-class Shifter(object):
+class Shifter:
     def __init__(self, sim, output_style="xyz", target=0):
         self.sim = sim
         self.coords = sim.coords
@@ -45,7 +50,9 @@ class Shifter(object):
         shift_range = np.arange(start, end, step)
         for shift in shift_range:
             shifted_coords = self.move_molecule(
-                shift * direction[0], shift * direction[1], 0
+                shift * direction[0],
+                shift * direction[1],
+                0,
             )
             self.write_shifted_coords(shifted_coords, shift)
 

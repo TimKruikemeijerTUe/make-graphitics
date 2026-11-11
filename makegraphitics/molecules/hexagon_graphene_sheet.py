@@ -1,10 +1,14 @@
+#!/usr/bin/env python3
+
+
 from math import sqrt
+
 import numpy as np
+
 from .base import Molecule
 
 
 class Hexagon_Graphene_Sheet(Molecule):
-
     def __init__(self, nx, ny, forcefield="OPLS"):
 
         config = self.crystal_params()
@@ -27,7 +31,7 @@ class Hexagon_Graphene_Sheet(Molecule):
         return [
             self.a * self.nx,
             1.5 * self.CC * self.ny,
-            self.layer_gap
+            self.layer_gap,
         ]
 
     # ----------------------------------------------------------
@@ -40,17 +44,17 @@ class Hexagon_Graphene_Sheet(Molecule):
 
         CC = self.CC
 
-        a1 = np.array([sqrt(3.0)*CC, 0.0, 0.0])
-        a2 = np.array([sqrt(3.0)/2.0*CC, 3.0/2.0*CC, 0.0])
+        a1 = np.array([sqrt(3.0) * CC, 0.0, 0.0])
+        a2 = np.array([sqrt(3.0) / 2.0 * CC, 3.0 / 2.0 * CC, 0.0])
 
         basis = [
-            np.array([0.0, 0.0, 0.0]),                         # A
-            np.array([sqrt(3.0)/2.0*CC, 0.5*CC, 0.0])          # B
+            np.array([0.0, 0.0, 0.0]),  # A
+            np.array([sqrt(3.0) / 2.0 * CC, 0.5 * CC, 0.0]),  # B
         ]
 
         for i in range(self.nx):
             for j in range(self.ny):
-                R = i*a1 + j*a2
+                R = i * a1 + j * a2
                 for b in basis:
                     coords.append(R + b)
 
@@ -97,7 +101,6 @@ class Hexagon_Graphene_Sheet(Molecule):
 
         for i in range(self.nx):
             for j in range(self.ny):
-
                 # Periodic wrapping
                 im = (i - 1) % self.nx
                 jm = (j - 1) % self.ny
@@ -128,7 +131,7 @@ class Hexagon_Graphene_Sheet(Molecule):
 
         bonds = self.assign_bonds(lattice_dimensions)
 
-        adjacency = {i+1: [] for i in range(self.natoms)}
+        adjacency = {i + 1: [] for i in range(self.natoms)}
 
         for b in bonds:
             adjacency[b[0]].append(b[1])
@@ -138,7 +141,7 @@ class Hexagon_Graphene_Sheet(Molecule):
 
         for atom, neighbours in adjacency.items():
             for i in range(len(neighbours)):
-                for j in range(i+1, len(neighbours)):
+                for j in range(i + 1, len(neighbours)):
                     angles.append([neighbours[i], atom, neighbours[j]])
 
         return np.array(angles, dtype=int)

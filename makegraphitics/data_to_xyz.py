@@ -1,8 +1,10 @@
-import yaml
-from scripts.molecules import *
-from scripts import *
-import numpy as np
+#!/usr/bin/env python3
+
+
 import sys
+
+from scripts import *
+from scripts.molecules import *
 
 sim = ReadLammpsData(sys.argv[1])
 

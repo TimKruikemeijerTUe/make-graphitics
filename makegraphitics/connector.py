@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
+
 import numpy as np
 
 
-class Connector(object):
+class Connector:
     def bond_labels(self, atom_labels, bonds, bond_types):
         bond_labels = []
         for bond in bonds:
@@ -67,7 +70,7 @@ class Connector(object):
             neighbours2.remove(bond[0] - 1)
             neighbours2 = [x + 1 for x in neighbours2]
 
-            if len(neighbours1) and len(neighbours2):
+            if neighbours1 and neighbours2:
                 for neighbour1 in neighbours1:
                     for neighbour2 in neighbours2:
                         # check it is not a three member ring

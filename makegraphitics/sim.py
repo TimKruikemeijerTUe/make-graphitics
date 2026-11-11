@@ -1,11 +1,15 @@
-from .lattice import Lattice
-from .connector import Connector
-import numpy as np
+#!/usr/bin/env python3
+
+
 import os
+
+import numpy as np
 import yaml
 
+from .connector import Connector
 
-class Sim(object):
+
+class Sim:
     def generate_connections(self):
         try:
             self.atom_labels, self.bonds
@@ -15,7 +19,9 @@ class Sim(object):
         connect = Connector()
         self.bond_types = connect.find_bond_types(self.atom_labels, self.bonds)
         self.bond_labels = connect.bond_labels(
-            self.atom_labels, self.bonds, self.bond_types
+            self.atom_labels,
+            self.bonds,
+            self.bond_types,
         )
 
         self.bond_graph = self.generate_bond_graph(self.bonds)
@@ -23,23 +29,31 @@ class Sim(object):
         self.angles = connect.angles(self.bonds, self.bond_graph)
         self.angle_types = connect.find_angle_types(self.atom_labels, self.angles)
         self.angle_labels = connect.angle_labels(
-            self.atom_labels, self.angles, self.angle_types
+            self.atom_labels,
+            self.angles,
+            self.angle_types,
         )
 
         self.dihedrals = connect.dihedrals(self.bonds, self.bond_graph)
         self.dihedral_types = connect.find_dihedral_types(
-            self.atom_labels, self.dihedrals
+            self.atom_labels,
+            self.dihedrals,
         )
         self.dihedral_labels = connect.dihedral_labels(
-            self.atom_labels, self.dihedrals, self.dihedral_types
+            self.atom_labels,
+            self.dihedrals,
+            self.dihedral_types,
         )
 
         self.impropers = connect.impropers(self.bonds, self.bond_graph)
         self.improper_types = connect.find_improper_types(
-            self.atom_labels, self.impropers
+            self.atom_labels,
+            self.impropers,
         )
         self.improper_labels = connect.improper_labels(
-            self.atom_labels, self.impropers, self.improper_types
+            self.atom_labels,
+            self.impropers,
+            self.improper_types,
         )
 
     def generate_bond_graph(self, bonds):

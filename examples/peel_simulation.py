@@ -1,7 +1,11 @@
-import yaml
-import numpy as np
+#!/usr/bin/env python3
+
+
 import math
+
 import makegraphitics as mg
+import numpy as np
+import yaml
 
 config = yaml.load(open("config.yaml"), Loader=yaml.FullLoader)
 forcefield = "GraFF_5"
@@ -18,7 +22,7 @@ flake1.coords = flake1.coords + np.array(
         10 * 2 * math.cos(math.pi / 6) * config[forcefield]["CC"],
         6 * 3 * config[forcefield]["CC"],
         3 * config[forcefield]["layer_gap"],
-    )
+    ),
 )
 
 bulk.vdw_defs = {1: 90}

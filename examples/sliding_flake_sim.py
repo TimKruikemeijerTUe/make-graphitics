@@ -1,6 +1,9 @@
-import yaml
-import numpy as np
+#!/usr/bin/env python3
+
+
 import makegraphitics as mg
+import numpy as np
+import yaml
 
 forcefield = "GraFF_5"
 
@@ -19,10 +22,10 @@ flake1 = mg.Crystal(molecule1, [1, 1, 1])
 
 flake1.coords = flake1.coords + np.array(
     (
-        20 * 2 * (3 ** 0.5) * config[forcefield]["CC"],
+        20 * 2 * (3**0.5) * config[forcefield]["CC"],
         72 * config[forcefield]["CC"],
         3.7 + (4) * config[forcefield]["layer_gap"],
-    )
+    ),
 )
 bulk.coords = bulk.coords + np.array((0, 0, 3.7))
 

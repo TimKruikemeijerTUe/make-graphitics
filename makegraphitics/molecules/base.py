@@ -1,10 +1,15 @@
-import yaml
+#!/usr/bin/env python3
+
+
 import os
 
+import yaml
 
-class Molecule(object):
+
+class Molecule:
     """A molecule or motif to be projected onto lattice points
-       Structure and bonding is defined within a derivative of this class"""
+    Structure and bonding is defined within a derivative of this class
+    """
 
     def crystal_params(self):
         path = os.path.dirname(__file__) + "/../params/"

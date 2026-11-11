@@ -1,8 +1,12 @@
-import numpy as np
+#!/usr/bin/env python3
+
+
 import os
 
+import numpy as np
 
-class Reaction(object):
+
+class Reaction:
     def __init__(self, rate, first, second):
         self.rate = rate
         self.first = first
@@ -11,7 +15,7 @@ class Reaction(object):
 
 oxidise_data = os.path.dirname(__file__) + "/../params/oxidise.data"
 reactions = []
-with open(oxidise_data, "r") as f:
+with open(oxidise_data) as f:
     count = 0
     for line in f:
         count += 1
@@ -51,7 +55,7 @@ for ri, r in enumerate(reactions):
         X[ri, ai] = getattr(r, a)
 Y = np.zeros(len(reactions))
 for ri, r in enumerate(reactions):
-    Y[ri] = getattr(r, "lograte")
+    Y[ri] = r.lograte
 
 
 def init_random_forest():
@@ -107,7 +111,6 @@ def fit_empirical(reactions, a, b, c, d, e, f, g, h):
 
 
 if __name__ == "__main__":
-
     rf = init_random_forest()
 
     p0 = [-3.867, 0.185, 23.169, -5.138, 11.648, -4.413, 1, 0.633]

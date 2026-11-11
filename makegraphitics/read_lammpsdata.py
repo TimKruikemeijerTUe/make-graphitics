@@ -1,11 +1,15 @@
+#!/usr/bin/env python3
+
+
 import numpy as np
+
 from .sim import Sim
 
 
 class ReadLammpsData(Sim):
     def __init__(self, filename):
-        """ Given a lammps data file this script will read in all 
-        the available data. 
+        """Given a lammps data file this script will read in all
+        the available data.
         Data that can be read in are listed in self.attributes.
         Coefficients will not be read and should be in a separate
         input file for lammps.
@@ -51,7 +55,7 @@ class ReadLammpsData(Sim):
                 line = self.read(datafile)
                 self.analyse(line, datafile)
         self.box_dimensions = np.array(
-            [[self.xlo, self.xhi], [self.ylo, self.yhi], [self.zlo, self.zhi]]
+            [[self.xlo, self.xhi], [self.ylo, self.yhi], [self.zlo, self.zhi]],
         )
         self.validate()
         extra_attributes = set(self.__dict__.keys()) - self.attributes
@@ -112,9 +116,7 @@ class ReadLammpsData(Sim):
         if not line:
             return  # blank line
         l = line[0]
-        if l == "#":
-            return  # catch comment line
-        elif l[0] == "#":
+        if l == "#" or l[0] == "#":
             return  # catch comment line
         if is_number(l):
             if len(line) == 2:

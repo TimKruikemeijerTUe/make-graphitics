@@ -1,10 +1,16 @@
+#!/usr/bin/env python3
+
+
 import makegraphitics as mg
 
 motif = mg.molecules.Rectangle_Graphene(50, 50)
 flake = mg.Crystal(motif, [1, 1, 1])
 
 oxidiser = mg.reactors.Oxidiser(
-    ratio=2.5, video_xyz=20, new_island_freq=1e14, method="rf"
+    ratio=2.5,
+    video_xyz=20,
+    new_island_freq=1e14,
+    method="rf",
 )
 flake = oxidiser.react(flake)
 

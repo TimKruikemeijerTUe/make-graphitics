@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
+
 def test_examples():
+    import subprocess
     from os import listdir
     from os.path import isfile, join
-    import subprocess
 
     path = "examples/"
 

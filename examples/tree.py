@@ -1,6 +1,9 @@
-import yaml
-import numpy as np
+#!/usr/bin/env python3
+
+
 import makegraphitics as mg
+import numpy as np
+import yaml
 
 config = yaml.load(open("config.yaml"), Loader=yaml.FullLoader)
 forcefield = "OPLS"
@@ -53,10 +56,10 @@ for i in [
 
     next_layer.coords = next_layer.coords + np.array(
         (
-            10 * 2 * (3 ** 0.5) * config[forcefield]["CC"],
+            10 * 2 * (3**0.5) * config[forcefield]["CC"],
             30 * config[forcefield]["CC"],
             j * config[forcefield]["layer_gap"],
-        )
+        ),
     )
     mg.Parameterise(next_layer, vdw_defs)
     sim = mg.Combine(sim, next_layer)

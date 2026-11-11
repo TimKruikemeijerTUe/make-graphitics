@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
+
 import numpy as np
 
 
-class Lattice(object):
+class Lattice:
     def __init__(self, cell_dimensions):
         self.cell_dimensions = cell_dimensions
 

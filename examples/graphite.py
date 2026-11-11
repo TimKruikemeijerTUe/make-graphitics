@@ -1,6 +1,10 @@
-import yaml
+#!/usr/bin/env python3
+
+
 from math import cos, pi
+
 import makegraphitics as mg
+import yaml
 
 config = yaml.load(open("config.yaml"), Loader=yaml.FullLoader)
 forcefield = "OPLS"

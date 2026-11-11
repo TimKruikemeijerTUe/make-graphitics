@@ -1,6 +1,11 @@
-from .sim import Sim
-import numpy as np
+#!/usr/bin/env python3
+
+
 import copy
+
+import numpy as np
+
+from .sim import Sim
 
 
 class Combine(Sim):
@@ -39,12 +44,10 @@ class Combine(Sim):
         #    self.combine_coeff(sim1, sim2, coeff,types,labels)
         # self.combine_coeff(sim1, sim2,'dihedral_coeffs','dihedral_types','dihedral_labels')
 
-        setattr(
-            self, "coords", self.stack(getattr(sim1, "coords"), getattr(sim2, "coords"))
-        )
+        self.coords = self.stack(sim1.coords, sim2.coords)
         for attr in ["bonds", "angles", "dihedrals", "impropers"]:
             attr1 = getattr(sim1, attr)
-            attr2 = getattr(sim2, attr) + len(getattr(sim1, "coords"))
+            attr2 = getattr(sim2, attr) + len(sim1.coords)
             setattr(self, attr, self.stack(attr1, attr2))
 
         for attr in [
@@ -60,7 +63,8 @@ class Combine(Sim):
             setattr(self, attr, self.join(attr1, attr2))
 
         self.molecule_labels = self.join(
-            sim1.molecule_labels, list(np.array(sim2.molecule_labels) + nmols1)
+            sim1.molecule_labels,
+            list(np.array(sim2.molecule_labels) + nmols1),
         )
 
     def combine_coeff(self, sim1, sim2, coeff, types, labels):
@@ -77,7 +81,9 @@ class Combine(Sim):
                     print("matched", coeff, i + 1, j + 1, def1, def2)
                     exists_in_sim1 += 1
                     new_labels = self.replace_labels(
-                        getattr(sim2, labels), i + 1, j + 1
+                        getattr(sim2, labels),
+                        i + 1,
+                        j + 1,
                     )
                     setattr(sim2, labels, new_labels)
             if not exists_in_sim1:
@@ -85,7 +91,9 @@ class Combine(Sim):
                 new_coeff = getattr(sim2, coeff)[i + 1]
                 new_coeffs[new_label] = new_coeff
                 new_labels = self.replace_labels(
-                    getattr(sim2, labels), i + 1, new_label
+                    getattr(sim2, labels),
+                    i + 1,
+                    new_label,
                 )
                 setattr(sim2, labels, new_labels)
                 new_types += [getattr(sim2, types)[i]]

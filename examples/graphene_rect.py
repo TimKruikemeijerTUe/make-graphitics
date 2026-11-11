@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 import makegraphitics as mg
 
 # makes a graphene flake that is 50x50 Angstroms

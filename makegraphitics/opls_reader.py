@@ -1,7 +1,7 @@
-import sys
+#!/usr/bin/env python3
 
 
-class OPLS_Reader(object):
+class OPLS_Reader:
     def __init__(self, datafile):
         self.setup_dicts()
         self.main = {
@@ -20,7 +20,6 @@ class OPLS_Reader(object):
                     self.readline(line)
                 else:
                     pass
-
 
     def readline(self, line):
         func = self.main.get(line[0:8], False)

@@ -1,16 +1,14 @@
-from .. import Writer
-from .. import Parameterise
+#!/usr/bin/env python3
 
 
-class Reactor(object):
-    """
-    Base class that performs a reaction on sim object
-    """
+from .. import Parameterise, Writer
+
+
+class Reactor:
+    """Base class that performs a reaction on sim object"""
 
     def react(self, sim):
-        """
-        Perform reaction on sim, return with changes
-        """
+        """Perform reaction on sim, return with changes"""
         raise NotImplementedError
 
     def output_snapshot(self, sim, format_="xyz", filename="out"):

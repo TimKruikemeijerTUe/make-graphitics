@@ -1,5 +1,10 @@
+#!/usr/bin/env python3
+
+
+from math import cos, pi
+
 import numpy as np
-from math import pi, cos
+
 from .base import Molecule
 
 
@@ -75,13 +80,25 @@ class Graphene(Molecule):
                     bonds = np.vstack((bonds, internal_bonds + i))
                     # Add bonds that cross cell boundries
                     bonds = self.add_cross_bond(
-                        lattice_dimensions, xcell_position, [3, 2], bonds, i
+                        lattice_dimensions,
+                        xcell_position,
+                        [3, 2],
+                        bonds,
+                        i,
                     )
                     bonds = self.add_cross_bond(
-                        lattice_dimensions, xycell_position, [4, 1], bonds, i
+                        lattice_dimensions,
+                        xycell_position,
+                        [4, 1],
+                        bonds,
+                        i,
                     )
                     bonds = self.add_cross_bond(
-                        lattice_dimensions, ycell_position, [4, 1], bonds, i
+                        lattice_dimensions,
+                        ycell_position,
+                        [4, 1],
+                        bonds,
+                        i,
                     )
 
         return bonds
