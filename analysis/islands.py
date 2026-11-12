@@ -165,9 +165,7 @@ def outer_polygon(coords, alpha):
 
     def alpha_shape(coords, alpha):
         def add_edge(edges, edge_points, coords, i, j):
-            """Add a line between the i-th and j-th points,
-            if not in the list already
-            """
+            """Add a line between the i-th and j-th points, if not in the list already."""
             if (i, j) in edges or (j, i) in edges:
                 # already added
                 return

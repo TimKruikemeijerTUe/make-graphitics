@@ -18,10 +18,7 @@ for i in range(5):
         (0, 0, i * config[forcefield]["layer_gap"]),
     )
     new_layer.vdw_defs = {1: 90, 2: 91}
-    if i == 0:
-        sim = new_layer
-    else:
-        sim = mg.Combine(sim, new_layer)
+    sim = new_layer if i == 0 else mg.Combine(sim, new_layer)
 
 mg.Parameterise(sim)
 

@@ -22,13 +22,13 @@ class Molecule:
         raise NotImplementedError("cell_coords not defined for this motif")
 
     def assign_molecules(self):
-        raise NotImplementedError("assing_molecules not defined for this motif")
+        raise NotImplementedError("assign_molecules not defined for this motif")
 
     def assign_atom_labels(self):
         raise NotImplementedError("assign_atom_labels not defined for this motif")
 
     def assign_atom_charges(self):
-        raise NotImplementedError("assing_atom_charges not defined for this motif")
+        raise NotImplementedError("assign_atom_charges not defined for this motif")
 
     def assign_bonds(self):
         raise NotImplementedError("assign_bonds not defined for this motif")

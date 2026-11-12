@@ -4,6 +4,7 @@
 import os
 
 import numpy as np
+from sklearn.ensemble import RandomForestRegressor
 
 
 class Reaction:
@@ -59,7 +60,6 @@ for ri, r in enumerate(reactions):
 
 
 def init_random_forest():
-    from sklearn.ensemble import RandomForestRegressor
 
     rf_reg = RandomForestRegressor(n_estimators=10, max_depth=4)
     rf_reg.fit(X, Y)
@@ -89,8 +89,6 @@ def fit_empirical(reactions, a, b, c, d, e, f, g, h):
             if abs(state) == 2:
                 polar += m[7]
 
-            # if state == 1: hbond =
-
         for state in reaction.second:
             if state == 1:
                 hbond += 1
@@ -101,11 +99,7 @@ def fit_empirical(reactions, a, b, c, d, e, f, g, h):
         polar = m[2] * polar + m[3] * polar * polar
         hbond = m[4] * hbond + m[5] * hbond * hbond
 
-        if edge:
-            rate = 1
-        else:
-            # rate = 10 ** (steric + polar + hbond)
-            rate = steric + polar + hbond
+        rate = 1 if edge else steric + polar + hbond
         rates += [rate]
     return rates
 

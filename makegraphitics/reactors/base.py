@@ -6,10 +6,10 @@ from makegraphitics.write_coords import Writer
 
 
 class Reactor:
-    """Base class that performs a reaction on sim object"""
+    """Base class that performs a reaction on sim object."""
 
     def react(self, sim):
-        """Perform reaction on sim, return with changes"""
+        """Perform reaction on sim, return with changes."""
         raise NotImplementedError
 
     def output_snapshot(self, sim, format_="xyz", filename="out"):

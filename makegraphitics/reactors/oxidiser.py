@@ -284,10 +284,7 @@ class Oxidiser(Reactor):
         print("C/O = ", self.Ncarbons, "/", self.Noxygens, "=", self.ratio())
 
     def ratio(self):
-        if self.Noxygens == 0:
-            ratio = float("inf")
-        else:
-            ratio = float(self.Ncarbons) / self.Noxygens
+        ratio = float("inf") if self.Noxygens == 0 else float(self.Ncarbons) / self.Noxygens
         return ratio
 
     def find_12_neighbours(self, crystal, i, j):
@@ -299,7 +296,7 @@ class Oxidiser(Reactor):
         first_neighbours = [n + 1 for n in first_neighbours]
         first_neighbours = set(first_neighbours) - {i, j}
         if len(first_neighbours) != expected_first_neighbours:
-            raise ValueError("Not enough first neighbours", i, j, first_neighbours)
+            raise ValueError(f"Not enough first neighbours: {i=} {j=} {first_neighbours=}")
 
         second_neighbours = set()
         for atom in first_neighbours:
@@ -310,7 +307,7 @@ class Oxidiser(Reactor):
         second_neighbours = {n + 1 for n in second_neighbours}
         second_neighbours = second_neighbours - first_neighbours - {i, j}
         if len(second_neighbours) != expected_second_neighbours:
-            raise ValueError("Not enough second neighbours", i, j, second_neighbours)
+            raise ValueError(f"Not enough second neighbours: {i=} {j=} {second_neighbours=}")
 
         return list(first_neighbours) + list(second_neighbours)
 
@@ -410,7 +407,7 @@ class Oxidiser(Reactor):
         edge = 0
         m = [-3.867, 0.185, 23.169, -5.138, 11.648, -4.413]
         for state in first:
-            if state == 1 or state == 2:
+            if state in {1, 2}:
                 steric += 1
             if abs(state) == 1:
                 polar += 1
@@ -429,10 +426,7 @@ class Oxidiser(Reactor):
         polar = m[2] * polar + m[3] * polar * polar
         hbond = m[4] * hbond + m[5] * hbond * hbond
 
-        if edge:
-            rate = 1
-        else:
-            rate = 10 ** (steric + polar + hbond)
+        rate = 1 if edge else 10 ** (steric + polar + hbond)
         return rate
 
     def find_new_island(self):
@@ -459,7 +453,7 @@ class Oxidiser(Reactor):
                     break
         if above == 0:
             # no possible oxidation sites
-            raise Exception("Couldnt find a new island site")
+            raise Exception("Couldn't find a new island site")
 
         return i, above
 
@@ -517,12 +511,9 @@ class Oxidiser(Reactor):
         first_neighbours = self.neighbours[site][0:4]
         for atom in first_neighbours:
             if sim.atom_labels[atom - 1] == 2:
-                raise Exception("i've picked an unallowed oxidation site...")
+                raise Exception("I've picked an unallowed oxidation site...")
 
-        if new_island:
-            time = 0
-        else:
-            time = 1 / (total)
+        time = 0 if new_island else 1 / total
         self.time_order += [time]
         return site, above, time
 
@@ -610,7 +601,7 @@ class Oxidiser(Reactor):
                 crystal.atom_labels += [354]
                 crystal.atom_charges += [+2.0]
             else:
-                raise Exception("Counterion not implemented:", counterion)
+                raise Exception(f"Counterion not implemented: {counterion}")
 
         new_bonds = np.array(
             ([C1_at + 1, O1_at + 1], [C1_at + 1, O2_at + 1]),

@@ -21,10 +21,7 @@ for i in range(3):
     new_layer = oxidiser.react(new_layer)
 
     new_layer.coords = new_layer.coords + np.array((0, 0, i * GO_separation))
-    if i == 0:
-        sim = new_layer
-    else:
-        sim = mg.Combine(sim, new_layer)
+    sim = new_layer if i == 0 else mg.Combine(sim, new_layer)
 
 mg.Parameterise(sim, new_layer.vdw_defs)
 

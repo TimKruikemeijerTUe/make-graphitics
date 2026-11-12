@@ -102,6 +102,3 @@ class OPLS_Reader:
         self.improper = {"a1": [], "a2": [], "centre": [], "a3": [], "k": [], "r": []}
         self.charge = {"a": [], "q": []}
         self.mass = {"a": [], "m": []}
-
-
-# a = OPLS_Reader(sys.argv[1])

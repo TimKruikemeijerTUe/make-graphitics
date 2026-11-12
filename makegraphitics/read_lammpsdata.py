@@ -176,7 +176,7 @@ class ReadLammpsData(Sim):
             self.atom_charges[i] = line[3]
 
     def read_velocities(self, datafile):
-        print("--- Ignoring Velocities --- noone cares")
+        print("--- Ignoring Velocities --- noone cares")  # TODO
         for i in range(self.Natoms):
             line = self.read(datafile)
 

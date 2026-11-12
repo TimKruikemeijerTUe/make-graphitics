@@ -14,7 +14,7 @@ y_length = 20
 layers = 10
 
 # calculate array of unit cells to make sheet
-# unit cell is the orthorombic unit cell of graphene
+# unit cell is the orthorhombic unit cell of graphene
 unit_cell_x = 2.0 * config[forcefield]["CC"] * cos(pi / 6.0)
 unit_cell_y = 3.0 * config[forcefield]["CC"]
 x_cells = int(x_length / unit_cell_x)

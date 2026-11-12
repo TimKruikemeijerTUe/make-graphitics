@@ -57,7 +57,7 @@ class Parameterise:
                     found += 1
                     charge_coeffs[label] = charge_data["q"][j]
             if found != 1:
-                raise ValueError("WRONG", label, "\t found ", found, " entries")
+                raise ValueError(f"WRONG {label} found {found} entries")
 
         charges = np.empty(len(atom_labels))
         for i, label in enumerate(atom_labels):
@@ -75,7 +75,7 @@ class Parameterise:
                     found += 1
                     mass_coeffs[label] = mass_data["m"][j]
             if found != 1:
-                raise ValueError("WRONG", label, "\t found ", found, " entries")
+                raise ValueError(f"WRONG {label} found {found} entries")
         return mass_coeffs
 
     def match_pairs(self):
@@ -91,7 +91,7 @@ class Parameterise:
                     pair_coeffs[label][1] = pair_data["e"][j]
                     pair_coeffs[label][2] = pair_data["s"][j]
             if found != 1:
-                raise ValueError("WRONG", label, "\t found ", found, " entries")
+                raise ValueError(f"WRONG {label} found {found} entries")
         return pair_coeffs
 
     def match_bonds(self, bond_types):
@@ -112,7 +112,8 @@ class Parameterise:
                     bond_coeffs[i + 1][1] = bond_data["k"][j]
                     bond_coeffs[i + 1][2] = bond_data["r"][j]
             if found != 1:
-                raise ValueError("WRONG", atoms, "\t found ", found, " entries")
+                raise ValueError(f"WRONG {atoms} found {found} entries")
+
         return bond_coeffs
 
     def match_angles(self, angle_types):
@@ -160,7 +161,7 @@ class Parameterise:
                     if found == 0:
                         print(found, [a1, a2, a3], atoms, "made 13 -> 47 sub")
             if found != 1:
-                raise ValueError("WRONG", atoms, "\t found ", found, " entries")
+                raise ValueError(f"WRONG {atoms} found {found} entries")
         if questionable_substitutions != 0:
             print("made ", questionable_substitutions, " questionable angle subs")
         return angle_coeffs
@@ -379,7 +380,7 @@ class Parameterise:
             paramfile = os.path.dirname(__file__) + "/params/oplsaa.prm"
             data = OPLS_Reader(paramfile)
         elif forcefield == "ReaxFF":
-            # paramters can be found https://github.com/lammps/lammps/tree/master/potentials
+            # parameters can be found https://github.com/lammps/lammps/tree/master/potentials
             raise Exception("No need to generate paramters for this forcefield")
         else:
             raise Exception(forcefield, "forcefield not implemented")

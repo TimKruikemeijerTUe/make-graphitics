@@ -85,7 +85,7 @@ class Graphite(Molecule):
                     # Add bonds within cell
                     i = self.index_cell([x, y, z], lattice_dimensions, 8)
                     bonds = np.vstack((bonds, internal_bonds + i))
-                    # Add bonds that cross cell boundries
+                    # Add bonds that cross cell boundaries
                     bonds = self.add_cross_bond(
                         lattice_dimensions,
                         xcell_position,
@@ -173,15 +173,9 @@ def find_neighbours(bonds, centre):
 def find_adjacent_cells(cell_position, lattice_dimensions):
     x, y, z = cell_position
     # Account for periodic system
-    if x == lattice_dimensions[0] - 1:
-        xcell_position = [0, y, z]
-    else:
-        xcell_position = [x + 1, y, z]
+    xcell_position = [0, y, z] if x == lattice_dimensions[0] - 1 else [x + 1, y, z]
 
-    if y == lattice_dimensions[1] - 1:
-        ycell_position = [x, 0, z]
-    else:
-        ycell_position = [x, y + 1, z]
+    ycell_position = [x, 0, z] if y == lattice_dimensions[1] - 1 else [x, y + 1, z]
 
     xycell_position = [xcell_position[0], ycell_position[1], z]
 

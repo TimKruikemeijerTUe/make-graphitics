@@ -131,7 +131,7 @@ class Writer:
                     + "\t "
                     + str(self.charges[i])  # atom type
                     + "\t "
-                    + str(self.coords[i][0])  # atomcharg
+                    + str(self.coords[i][0])  # atomcharge
                     + "\t "
                     + str(self.coords[i][1])  # x
                     + "\t "

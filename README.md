@@ -143,3 +143,10 @@ There are 4 public forks:
     - Spell checks README
 
 The last fork is forked to get this repo.
+
+# TODO
+[ ] Harden paths using pathlib
+[ ] Add type hints
+[ ] Better error throwing
+[ ] Remove dead code and comments
+[ ] Update README
