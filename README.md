@@ -1,4 +1,7 @@
+# **WIP: Currently being worked on**
+
 # Graphite, Graphene and Graphene Oxide Builder
+
 
 MakeGraphitics is a library to create various atomistic graphitic structures for molecular dynamics.
 

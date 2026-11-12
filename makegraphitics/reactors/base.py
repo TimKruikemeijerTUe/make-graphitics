@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 
-from .. import Parameterise, Writer
+from makegraphitics.params import Parameterise
+from makegraphitics.write_coords import Writer
 
 
 class Reactor:

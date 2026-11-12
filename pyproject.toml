@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "makegraphitics"
+version = "1.0.0"
+description = "Tool to build graphitic structures for atomistic simulation"
+keywords = ["graphene", "graphite"]
+authors = [{ name = "Tim" }]
+license-files = ["LICEN[CS]E*"]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["pyyaml", "scikit-learn", "numpy", "scipy"]
+
+[project.urls]
+repository = "https://github.com/TimKruikemeijerTUe/make-graphitics"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["makegraphitics*"]
+
+[tool.setuptools.package-data]
+makegraphitics = ["params/*.data", "params/*.prm", "params/*.yaml"]
